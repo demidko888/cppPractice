@@ -4,12 +4,13 @@
 #include <ctime>
 #include <chrono>
 
+//final vs
 using namespace std;
 
 #pragma region Functions
 void PrintFirstFifty(int* array, string str) {
     cout << "First 50 " + str + " elements: ";
-    for (int i = 0; i < 50; ++i)
+    for (int i = 0; i < 50; i++)
         cout << array[i] << " ; ";
     cout << endl;
 }
