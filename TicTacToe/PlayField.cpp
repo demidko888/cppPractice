@@ -1,0 +1,105 @@
+#include <vector>
+#include <cassert>
+#include "PlayField.h"
+
+using namespace std;
+
+bool PlayField::operator==(const PlayField& second) {
+	for (int x = 0; x < DIM; x++)
+		for (int y = 0; y < DIM; y++)
+			if (matrix[x][y] != second[CellIdx::CreateIndex(x, y)])
+				return false;
+	return true;
+}
+
+PlayField PlayField::operator+(CellIdx index) const {
+	assert(matrix[index.X()][index.Y()] == csEmpty);
+	PlayField newField = PlayField(*this);
+	newField.matrix[index.X()][index.Y()] = GetNextMove();
+	return newField;
+}
+
+PlayField::CellState PlayField::operator[](CellIdx index) const{
+	return matrix[index.X()][index.Y()];
+}
+
+std::vector<PlayField::CellIdx> PlayField::getEmptyCells() const{
+	vector<CellIdx> emptyCells;
+	for (int x = 0; x < DIM; x++)
+		for (int y = 0; y < DIM; y++)
+			if (matrix[x][y] == csEmpty)
+				emptyCells.push_back(PlayField::CellIdx::CreateIndex(x, y));
+	return emptyCells;
+}
+
+PlayField::FieldStatus PlayField::checkFieldStatus() const{
+	int crossesCount = 0;
+	int noughtsCount = 0;
+	Counts(crossesCount, noughtsCount);
+	bool isCrossesWin = HasWinSequence(csCross);
+	bool isNoughtsWin = HasWinSequence(csNought);
+	bool isNormal = abs(crossesCount - noughtsCount) < 2;
+	bool isMovesEnd = getEmptyCells().empty();
+	FieldStatus isWinOrDraw = isCrossesWin ? fsCrossesWin : isNoughtsWin ? fsNoughtsWin : fsDraw;
+	return (isCrossesWin || isNoughtsWin || (isNormal && isMovesEnd)) ? isWinOrDraw : isNormal ? fsNormal : fsInvalid;
+}
+
+PlayField PlayField::makeMove(CellIdx index) const{
+	assert(matrix[index.X()][index.Y()] == csEmpty);
+	return PlayField(*this) + index;
+}
+
+
+bool PlayField::isVertical(PlayField::CellState mark, int col) const{
+	for (int y = 0; y < DIM; y++)
+		if (matrix[col][y] != mark)
+			return false;
+	return true;
+}
+
+bool PlayField::isHorizontal(PlayField::CellState mark, int row) const{
+	for (auto x : matrix)
+		if (x[row] != mark)
+			return false;
+	return true;
+}
+
+bool PlayField::isDiagonal(PlayField::CellState mark) const{
+	int count = 0;
+	for (int i = 0; i < DIM; i++)
+		if (matrix[i][i] == mark)
+			count++;
+	if (count == DIM) return true;
+	count = 0;
+	for (int i = DIM - 1; i >= 0; i--)
+		if(matrix[i][DIM - 1 - i]==mark)
+			count++;
+	if (count == DIM) return true;
+	return false;
+}
+
+bool PlayField::HasWinSequence(PlayField::CellState mark) const{
+	bool horiz = isHorizontal(mark, 0) || isHorizontal(mark, 1) || isHorizontal(mark, 2);
+	bool vert = isVertical(mark, 0) || isVertical(mark, 1) || isVertical(mark, 2);
+	bool diagonal = isDiagonal(mark);
+	return horiz || vert || diagonal;
+}
+
+PlayField::CellState PlayField::GetNextMove() const{
+	int crossCount = 0, noughtCount = 0;
+	Counts(crossCount, noughtCount);
+	return crossCount > noughtCount ? csNought : csCross;
+}
+
+void PlayField::Counts(int& crossesCount, int& noughtsCount) const{
+	for (auto x : matrix)
+		for (int y = 0; y < DIM; y++)
+			switch (x[y]) {
+			case csNought:
+				noughtsCount++;
+				break;
+			case csCross:
+				crossesCount++;
+				break;
+			}
+}
