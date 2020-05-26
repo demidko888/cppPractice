@@ -13,5 +13,6 @@ public:
     int minColumn(const int iCol) const;
     int maxColumn(const int iCol) const;
 private:
-    int matrix[3][3];
+    static constexpr int DIM = 3;
+    int matrix[DIM][DIM];
 };
