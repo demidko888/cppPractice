@@ -38,7 +38,7 @@ int main()
             if (select == 0) {
                 cout << "Enter index of cell [x,y]" << endl;
                 cin >> x >> y;
-                player.MakeMove(PlayField::CellIdx::CreateIndex(x, y));
+                player.MakeMove(&PlayField::CellIdx::CreateIndex(x, y));
                 PrintField(player.currentState());
                 player.MakeMove();
             }
@@ -47,7 +47,7 @@ int main()
                 PrintField(player.currentState());
                 cout << "Enter index of cell [x,y]" << endl;
                 cin >> x >> y;
-                player.MakeMove(PlayField::CellIdx::CreateIndex(x, y));
+                player.MakeMove(&PlayField::CellIdx::CreateIndex(x, y));
             }
         } while (player.fieldStatus() == PlayField::fsNormal);
         PrintField(player.currentState());

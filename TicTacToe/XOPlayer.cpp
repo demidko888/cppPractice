@@ -25,8 +25,8 @@ void CountMyWins(TreeNode& root, int(&results)[3]) {
         CountMyWins(root[i], results);
 }
 
-void XOPlayer::MakeMove(PlayField::CellIdx index){
-    currentFieldState = currentFieldState.makeMove(index);
+void XOPlayer::MakeMove(PlayField::CellIdx* index){
+    currentFieldState = currentFieldState.makeMove(*index);
     checkFieldState();
 }
 

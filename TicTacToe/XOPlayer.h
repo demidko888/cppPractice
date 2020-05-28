@@ -8,7 +8,7 @@ public:
     PlayField::FieldStatus fieldStatus() const { return currentFieldState.checkFieldStatus(); };
     PlayField currentState() const { return currentFieldState; };
     void MakeMove();
-    void MakeMove(PlayField::CellIdx index);
+    void MakeMove(PlayField::CellIdx* index);
 private:
     static constexpr int DIM = 3;
     TreeNode* stepsTree;

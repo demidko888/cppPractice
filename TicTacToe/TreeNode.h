@@ -2,8 +2,6 @@
 #include <vector>
 #include "PlayField.h"
 
-using namespace std;
-
 class TreeNode {
 public:
     TreeNode(PlayField newState, TreeNode* parent = nullptr);
@@ -13,9 +11,8 @@ public:
     int childCount() const;
     const PlayField& value() const;
 private:
-    static constexpr int DIM = 3;
-    int childQty() const;
+    const int childQty() const;
     const PlayField state;
-    vector<TreeNode*> children;
+    std::vector<TreeNode*> children;
     const TreeNode* parent = nullptr;
 };
