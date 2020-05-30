@@ -3,7 +3,6 @@
 
 class Matrix2D : public MatrixBase {
 public:
-    Matrix2D() :MatrixBase(DIM){}
 
     int element(unsigned int i, unsigned int j) const override;
 

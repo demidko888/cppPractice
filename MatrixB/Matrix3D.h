@@ -4,7 +4,7 @@
 class Matrix3D : public MatrixBase {
 public:
 
-    Matrix3D() :MatrixBase(DIM) {}
+    Matrix3D();
 
     int element(unsigned int i, unsigned int j) const override;
 
