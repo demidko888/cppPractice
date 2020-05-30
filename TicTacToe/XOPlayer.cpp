@@ -1,11 +1,6 @@
 #include "XOPlayer.h"
 #include "PlayField.h"
 
-XOPlayer::XOPlayer(TreeNode& iStepsTree, PlayField::FieldStatus myMark) {
-    stepsTree = &iStepsTree;
-    currentPlayerWinSequence = myMark;
-}
-
 void CountMyWins(TreeNode& root, int(&results)[3]) {
     if (root.isTerminal()) {
         switch (root.value().checkFieldStatus()) {
@@ -64,8 +59,8 @@ void XOPlayer::checkFieldState() {
 
 PlayField::CellIdx XOPlayer::GetNextMoveIndex(PlayField bestState){
     PlayField::CellIdx tempIndex = PlayField::CellIdx::CreateIndex(0, 0);
-    for (int x = 0; x < DIM; ++x)
-        for (int y = 0; y < DIM; ++y) {
+    for (int x = 0; x < 3; ++x)
+        for (int y = 0; y < 3; ++y) {
             tempIndex = PlayField::CellIdx::CreateIndex(x, y);
             if (currentFieldState[tempIndex] != bestState[tempIndex])
                 return tempIndex;
