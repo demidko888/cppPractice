@@ -14,7 +14,7 @@ bool TreeNode::isTerminal() const{
 }
 
 void TreeNode::addChild(TreeNode* child){
-	assert(children.size() < 9);
+	assert(children.size() < DIM*DIM);
 	child->parent = this;
 	children.push_back(child);
 }
@@ -32,5 +32,5 @@ const PlayField& TreeNode::value() const{
 }
 
 const int TreeNode::childQty() const{
-	return (parent ? parent->childQty() - 1 : 9);
+	return (parent ? parent->childQty() - 1 : DIM*DIM);
 }

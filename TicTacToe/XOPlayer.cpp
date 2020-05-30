@@ -31,7 +31,7 @@ void XOPlayer::MakeMove(PlayField::CellIdx index){
 }
 
 void XOPlayer::MakeMove() {
-    if (stepsTree[0].isTerminal())
+    if (currentTreeNode[0].isTerminal())
         return;
     int maxCount = 0, maxIndex = 0, markIndex;
     if (currentPlayerWinSequence == PlayField::fsCrossesWin)
@@ -41,13 +41,13 @@ void XOPlayer::MakeMove() {
 
     for (int i = 0; i < currentTreeNode->childCount(); ++i) {
         int results[3] = { 0,0,0 };
-        CountMyWins(stepsTree[0][i], results);
+        CountMyWins(currentTreeNode[0][i], results);
         if (results[markIndex] + results[2] > maxCount) {
             maxCount = results[markIndex] + results[2];
             maxIndex = i;
         }
     }
-    auto temp = stepsTree[0][maxIndex].value();
+    auto temp = currentTreeNode[0][maxIndex].value();
     currentFieldState = currentFieldState.makeMove(GetNextMoveIndex(temp));
     checkFieldState();
 }
@@ -64,8 +64,8 @@ void XOPlayer::checkFieldState() {
 
 PlayField::CellIdx XOPlayer::GetNextMoveIndex(PlayField bestState){
     PlayField::CellIdx tempIndex = PlayField::CellIdx::CreateIndex(0, 0);
-    for (int x = 0; x < DIM; ++x)
-        for (int y = 0; y < DIM; ++y) {
+    for (int x = 0 ;x < DIM; ++x)
+        for (int y = 0;y < DIM; ++y) {
             tempIndex = PlayField::CellIdx::CreateIndex(x, y);
             if (currentFieldState[tempIndex] != bestState[tempIndex])
                 return tempIndex;

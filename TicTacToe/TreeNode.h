@@ -11,6 +11,7 @@ public:
     int childCount() const;
     const PlayField& value() const;
 private:
+	static constexpr int DIM = 3;
     const int childQty() const;
     const PlayField state;
     std::vector<TreeNode*> children;

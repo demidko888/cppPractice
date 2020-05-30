@@ -4,17 +4,25 @@
 
 class XOPlayer {
 public:
+
 	XOPlayer(TreeNode& iStepsTree, PlayField::FieldStatus myMark);
+
     PlayField::FieldStatus fieldStatus() const { return currentFieldState.checkFieldStatus(); };
     PlayField currentState() const { return currentFieldState; };
+
     void MakeMove();
     void MakeMove(PlayField::CellIdx index);
 private:
+
 	static constexpr int DIM = 3;
+
     TreeNode &stepsTree;
 	TreeNode *currentTreeNode = nullptr;
+
     PlayField currentFieldState;
     PlayField::FieldStatus currentPlayerWinSequence;
+	PlayField::CellIdx GetNextMoveIndex(PlayField bestSate);
+
     void checkFieldState();
-    PlayField::CellIdx GetNextMoveIndex(PlayField bestSate);
+    
 };
