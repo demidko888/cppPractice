@@ -4,16 +4,15 @@
 
 class XOPlayer {
 public:
-    XOPlayer(TreeNode& iStepsTree, PlayField::FieldStatus myMark) {
-        stepsTree = &iStepsTree;
-        currentPlayerWinSequence = myMark;
-    }
+	XOPlayer(TreeNode& iStepsTree, PlayField::FieldStatus myMark);
     PlayField::FieldStatus fieldStatus() const { return currentFieldState.checkFieldStatus(); };
     PlayField currentState() const { return currentFieldState; };
     void MakeMove();
-    void MakeMove(PlayField::CellIdx* index);
+    void MakeMove(PlayField::CellIdx index);
 private:
-    TreeNode* stepsTree;
+	static constexpr int DIM = 3;
+    TreeNode &stepsTree;
+	TreeNode *currentTreeNode = nullptr;
     PlayField currentFieldState;
     PlayField::FieldStatus currentPlayerWinSequence;
     void checkFieldState();

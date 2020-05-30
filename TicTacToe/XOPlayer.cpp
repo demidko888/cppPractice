@@ -1,6 +1,11 @@
 #include "XOPlayer.h"
 #include "PlayField.h"
 
+XOPlayer::XOPlayer(TreeNode& iStepsTree, PlayField::FieldStatus myMark) : stepsTree(iStepsTree) {
+	currentTreeNode = &stepsTree;
+	currentPlayerWinSequence = myMark;
+}
+
 void CountMyWins(TreeNode& root, int(&results)[3]) {
     if (root.isTerminal()) {
         switch (root.value().checkFieldStatus()) {
@@ -20,8 +25,8 @@ void CountMyWins(TreeNode& root, int(&results)[3]) {
         CountMyWins(root[i], results);
 }
 
-void XOPlayer::MakeMove(PlayField::CellIdx* index){
-    currentFieldState = currentFieldState.makeMove(*index);
+void XOPlayer::MakeMove(PlayField::CellIdx index){
+    currentFieldState = currentFieldState.makeMove(index);
     checkFieldState();
 }
 
@@ -34,7 +39,7 @@ void XOPlayer::MakeMove() {
     else
         markIndex = 1;
 
-    for (int i = 0; i < stepsTree->childCount(); ++i) {
+    for (int i = 0; i < currentTreeNode->childCount(); ++i) {
         int results[3] = { 0,0,0 };
         CountMyWins(stepsTree[0][i], results);
         if (results[markIndex] + results[2] > maxCount) {
@@ -48,10 +53,10 @@ void XOPlayer::MakeMove() {
 }
 
 void XOPlayer::checkFieldState() {
-    for (int i = 0; i < stepsTree->childCount(); ++i) {
-        TreeNode& temp = stepsTree[0][i];
+    for (int i = 0; i < currentTreeNode->childCount(); ++i) {
+        TreeNode& temp = currentTreeNode[0][i];
         if ((PlayField)temp.value() == currentFieldState) {
-            stepsTree = &stepsTree[0][i];
+            currentTreeNode = &currentTreeNode[0][i];
             break;
         }
     }
@@ -59,8 +64,8 @@ void XOPlayer::checkFieldState() {
 
 PlayField::CellIdx XOPlayer::GetNextMoveIndex(PlayField bestState){
     PlayField::CellIdx tempIndex = PlayField::CellIdx::CreateIndex(0, 0);
-    for (int x = 0; x < 3; ++x)
-        for (int y = 0; y < 3; ++y) {
+    for (int x = 0; x < DIM; ++x)
+        for (int y = 0; y < DIM; ++y) {
             tempIndex = PlayField::CellIdx::CreateIndex(x, y);
             if (currentFieldState[tempIndex] != bestState[tempIndex])
                 return tempIndex;
