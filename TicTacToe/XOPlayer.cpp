@@ -26,7 +26,7 @@ void CountMyWins(TreeNode& root, int(&results)[3]) {
 }
 
 void XOPlayer::MakeMove(PlayField::CellIdx index){
-    PlayField currentField = currentTreeNode->value().makeMove(index);
+    PlayField currentField = currentState().makeMove(index);
     checkFieldState(currentField);
 }
 
@@ -49,7 +49,7 @@ void XOPlayer::MakeMove() {
         }
     }
     auto temp = currentTreeNode[0][maxIndex].value();
-    currentField = currentTreeNode->value().makeMove(GetNextMoveIndex(temp));
+    currentField = currentState().makeMove(GetNextMoveIndex(temp));
     checkFieldState(currentField);
 }
 
@@ -68,7 +68,7 @@ PlayField::CellIdx XOPlayer::GetNextMoveIndex(PlayField bestState){
     for (int x = 0 ;x < DIM; ++x)
         for (int y = 0;y < DIM; ++y) {
             tempIndex = PlayField::CellIdx::CreateIndex(x, y);
-            if (currentTreeNode->value()[tempIndex] != bestState[tempIndex])
+            if (currentState()[tempIndex] != bestState[tempIndex])
                 return tempIndex;
         }
     return tempIndex;
