@@ -37,7 +37,7 @@ PlayField::FieldStatus PlayField::checkFieldStatus() const{
 	if (!isCrossesWin && !isNoughtsWin && isMovesEnd)
 		return fsDraw;
 	FieldStatus fsWin = isCrossesWin ? fsCrossesWin : fsNoughtsWin ;
-	return (isCrossesWin || isNoughtsWin || isMovesEnd) ? fsWin : fsNormal;
+	return (isCrossesWin || isNoughtsWin) ? fsWin : fsNormal;
 }
 
 PlayField PlayField::makeMove(CellIdx index) const{
@@ -61,17 +61,8 @@ bool PlayField::isHorizontal(PlayField::CellState mark, int row) const{
 }
 
 bool PlayField::isDiagonal(PlayField::CellState mark) const{
-	int count = 0;
-	for (int i = 0; i < DIM; i++)
-		if (matrix[i][i] == mark)
-			count++;
-	if (count == DIM) return true;
-	count = 0;
-	for (int i = DIM - 1; i >= 0; i--)
-		if(matrix[i][DIM - 1 - i]==mark)
-			count++;
-	if (count == DIM) return true;
-	return false;
+	return (matrix[0][0] == mark && matrix[1][1] == mark && matrix[2][2] == mark)
+		|| (matrix[2][0] == mark && matrix[1][1] == mark && matrix[0][2] == mark);
 }
 
 bool PlayField::HasWinSequence(PlayField::CellState mark) const{
@@ -85,6 +76,7 @@ PlayField::CellState PlayField::GetNextMove() const{
 	int crossCount = 0, noughtCount = 0;
 	Counts(crossCount, noughtCount);
 	int count = crossCount - noughtCount;
+	assert(crossCount + noughtCount < DIM * DIM);
 	assert(count == 1 || count == 0);
 	return (count == 1 ) ? csNought : csCross;
 }
