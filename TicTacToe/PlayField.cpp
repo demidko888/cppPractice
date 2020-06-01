@@ -12,7 +12,6 @@ bool PlayField::operator==(const PlayField& second) const{
 }
 
 PlayField PlayField::operator+(CellIdx index) const {
-	assert(matrix[index.X()][index.Y()] == csEmpty);
 	PlayField newField = PlayField(*this);
 	newField.matrix[index.X()][index.Y()] = GetNextMove();
 	return newField;
@@ -42,6 +41,11 @@ PlayField::FieldStatus PlayField::checkFieldStatus() const{
 
 PlayField PlayField::makeMove(CellIdx index) const{
 	assert(matrix[index.X()][index.Y()] == csEmpty);
+	int crossCount = 0, noughtCount = 0;
+	Counts(crossCount, noughtCount);
+	int count = crossCount - noughtCount;
+	assert(crossCount + noughtCount < DIM*DIM);
+	assert(count == 1 || count == 0);
 	return *this + index;
 }
 
@@ -61,13 +65,26 @@ bool PlayField::isHorizontal(PlayField::CellState mark, int row) const{
 }
 
 bool PlayField::isDiagonal(PlayField::CellState mark) const{
-	return (matrix[0][0] == mark && matrix[1][1] == mark && matrix[2][2] == mark)
-		|| (matrix[2][0] == mark && matrix[1][1] == mark && matrix[0][2] == mark);
+	bool mainDiagonal = true;
+	bool sideDiagonal = true;
+	for (int i = 0; i < DIM; i++) {
+		if (matrix[i][i]!=mark)
+			mainDiagonal = false;
+		if (matrix[i][DIM - i - 1]!=mark)
+			sideDiagonal = false;
+	}
+	return mainDiagonal || sideDiagonal;
 }
 
 bool PlayField::HasWinSequence(PlayField::CellState mark) const{
-	bool horiz = isHorizontal(mark, 0) || isHorizontal(mark, 1) || isHorizontal(mark, 2);
-	bool vert = isVertical(mark, 0) || isVertical(mark, 1) || isVertical(mark, 2);
+	bool horiz = false;
+	bool vert = false;
+	for (int i = 0; i < DIM; i++) {
+		if (!horiz)
+			horiz = isHorizontal(mark, i);
+		if (!vert)
+			vert = isVertical(mark, i);
+	}
 	bool diagonal = isDiagonal(mark);
 	return horiz || vert || diagonal;
 }
@@ -76,15 +93,13 @@ PlayField::CellState PlayField::GetNextMove() const{
 	int crossCount = 0, noughtCount = 0;
 	Counts(crossCount, noughtCount);
 	int count = crossCount - noughtCount;
-	assert(crossCount + noughtCount < DIM * DIM);
-	assert(count == 1 || count == 0);
-	return (count == 1 ) ? csNought : csCross;
+	return (count == 1 ) ? csNought : (count==0)? csCross : csEmpty;
 }
 
 vector<PlayField::CellIdx> PlayField::getEmptyCells() const {
 	vector<CellIdx> emptyCells;
-	for (int x = 0; x < 3; x++)
-		for (int y = 0; y < 3; y++)
+	for (int x = 0; x < DIM; x++)
+		for (int y = 0; y < DIM; y++)
 			if (matrix[x][y] == csEmpty)
 				emptyCells.push_back(PlayField::CellIdx::CreateIndex(x, y));
 	return emptyCells;
