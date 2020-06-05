@@ -19,7 +19,7 @@ int main()
     int select;
     cin >> select;
     if (select == 0) {
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < DIM*DIM; i++) {
             PrintField(node0[i].value());
             int results[3] = { 0, 0, 0 };
             CountResults(node0[i], results);
@@ -74,8 +74,8 @@ void BuildSubTree(TreeNode& root) {
 
 void PrintField(PlayField field) {
     cout << "-------" << endl;
-    for (int x = 0; x < 3; x++) {
-        for (int y = 0; y < 3; y++)
+    for (int x = 0; x < DIM; x++) {
+        for (int y = 0; y < DIM; y++)
             PrintCell(field[PlayField::CellIdx::CreateIndex(x, y)]);
         cout << "|" << endl;
     }
