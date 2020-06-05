@@ -31,7 +31,7 @@ PlayField::FieldStatus PlayField::checkFieldStatus() const{
 	bool isNormal = (count == 1 || count == 0);
 	if (!isNormal)
 		return fsInvalid;
-	bool isMovesEnd = crossesCount+noughtsCount==9;
+	bool isMovesEnd = crossesCount+noughtsCount==DIM*DIM;
 	assert(!(isCrossesWin && isNoughtsWin));
 	if (!isCrossesWin && !isNoughtsWin && isMovesEnd)
 		return fsDraw;
