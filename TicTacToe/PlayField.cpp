@@ -93,7 +93,9 @@ PlayField::CellState PlayField::GetNextMove() const{
 	int crossCount = 0, noughtCount = 0;
 	Counts(crossCount, noughtCount);
 	int count = crossCount - noughtCount;
-	return (count == 1 ) ? csNought : (count==0)? csCross : csEmpty;
+	if (crossCount + noughtCount == 9)
+		return csEmpty;
+	return (count == 1) ? csNought : csCross;
 }
 
 vector<PlayField::CellIdx> PlayField::getEmptyCells() const {

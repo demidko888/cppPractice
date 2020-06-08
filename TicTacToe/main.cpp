@@ -5,6 +5,9 @@
 
 using namespace std;
 
+static constexpr int FIELD_DIM = 3;
+static constexpr int FIELD_SIZE = 9;
+
 void BuildSubTree(TreeNode& root);
 void PrintField(PlayField field);
 void PrintCell(PlayField::CellState cell);
@@ -19,7 +22,7 @@ int main()
     int select;
     cin >> select;
     if (select == 0) {
-        for (int i = 0; i < DIM*DIM; i++) {
+        for (int i = 0; i < FIELD_SIZE; i++) {
             PrintField(node0[i].value());
             int results[3] = { 0, 0, 0 };
             CountResults(node0[i], results);
@@ -74,8 +77,8 @@ void BuildSubTree(TreeNode& root) {
 
 void PrintField(PlayField field) {
     cout << "-------" << endl;
-    for (int x = 0; x < DIM; x++) {
-        for (int y = 0; y < DIM; y++)
+    for (int x = 0; x < FIELD_DIM; x++) {
+        for (int y = 0; y < FIELD_DIM; y++)
             PrintCell(field[PlayField::CellIdx::CreateIndex(x, y)]);
         cout << "|" << endl;
     }
