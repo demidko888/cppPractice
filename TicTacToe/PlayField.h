@@ -34,6 +34,7 @@ public:
     PlayField makeMove(CellIdx index) const;
     bool operator==(const PlayField& second) const;
 	static constexpr int DIM = 3;
+	static constexpr int SIZE = DIM * DIM;
 private:
    
     CellState matrix[DIM][DIM]{ csEmpty };    

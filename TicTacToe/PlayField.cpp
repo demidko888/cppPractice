@@ -31,7 +31,7 @@ PlayField::FieldStatus PlayField::checkFieldStatus() const{
 	bool isNormal = (count == 1 || count == 0);
 	if (!isNormal)
 		return fsInvalid;
-	bool isMovesEnd = crossesCount+noughtsCount==DIM*DIM;
+	bool isMovesEnd = crossesCount+noughtsCount==SIZE;
 	assert(!(isCrossesWin && isNoughtsWin));
 	if (!isCrossesWin && !isNoughtsWin && isMovesEnd)
 		return fsDraw;
@@ -93,8 +93,10 @@ PlayField::CellState PlayField::GetNextMove() const{
 	int crossCount = 0, noughtCount = 0;
 	Counts(crossCount, noughtCount);
 	int count = crossCount - noughtCount;
-	assert(crossCount + noughtCount < DIM * DIM);
+	assert(crossCount + noughtCount <= SIZE);
 	assert(count == 1 || count == 0);
+	if (crossCount + noughtCount == SIZE)
+		return csEmpty;
 	return (count == 1) ? csNought : csCross;
 }
 
