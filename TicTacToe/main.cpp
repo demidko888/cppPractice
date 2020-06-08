@@ -5,8 +5,7 @@
 
 using namespace std;
 
-static constexpr int FIELD_DIM = 3;
-static constexpr int FIELD_SIZE = 9;
+static constexpr int FIELD_DIM = PlayField::DIM;
 
 void BuildSubTree(TreeNode& root);
 void PrintField(PlayField field);
@@ -22,7 +21,7 @@ int main()
     int select;
     cin >> select;
     if (select == 0) {
-        for (int i = 0; i < FIELD_SIZE; i++) {
+        for (int i = 0; i < FIELD_DIM*FIELD_DIM; i++) {
             PrintField(node0[i].value());
             int results[3] = { 0, 0, 0 };
             CountResults(node0[i], results);

@@ -93,8 +93,8 @@ PlayField::CellState PlayField::GetNextMove() const{
 	int crossCount = 0, noughtCount = 0;
 	Counts(crossCount, noughtCount);
 	int count = crossCount - noughtCount;
-	if (crossCount + noughtCount == 9)
-		return csEmpty;
+	assert(crossCount + noughtCount < DIM * DIM);
+	assert(count == 1 || count == 0);
 	return (count == 1) ? csNought : csCross;
 }
 

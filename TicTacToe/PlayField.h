@@ -33,10 +33,9 @@ public:
     std::vector<PlayField::CellIdx> getEmptyCells() const;
     PlayField makeMove(CellIdx index) const;
     bool operator==(const PlayField& second) const;
-
+	static constexpr int DIM = 3;
 private:
-    static constexpr int DIM = 3;
-
+   
     CellState matrix[DIM][DIM]{ csEmpty };    
 	CellState GetNextMove() const;
     PlayField operator+(CellIdx index) const;
