@@ -44,7 +44,7 @@ PlayField PlayField::makeMove(CellIdx index) const{
 	int crossCount = 0, noughtCount = 0;
 	Counts(crossCount, noughtCount);
 	int count = crossCount - noughtCount;
-	assert(crossCount + noughtCount < DIM*DIM);
+	assert(crossCount + noughtCount < SIZE);
 	assert(count == 1 || count == 0);
 	return *this + index;
 }
